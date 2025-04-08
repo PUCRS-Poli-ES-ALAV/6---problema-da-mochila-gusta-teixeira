@@ -39,7 +39,7 @@ public class Main{
             iter = 0;
             instru = 0;
             long inicio = System.nanoTime();
-            long result = backPackPd(itens.length, capacidades[j], itens);
+            long result = backpack_forcabruta(itens,capacidades[j]);
             long fim = System.nanoTime();
             long tempo = fim - inicio;
             System.out.printf("%5d | %10d | %10d | %12d | %.12f\n", capacidades[j], result, iter, instru, tempo*1e-9);
@@ -49,6 +49,30 @@ public class Main{
 
     }
 
+    static int backpack_forcabruta(int[][] itens, int capacidade) {
+        int n = itens.length;
+        int melhorValor = 0;
+
+        int totalComb = (int) Math.pow(2, n);
+
+        for (int i = 0; i < totalComb; i++) {
+            int pesoTotal = 0;
+            int valorTotal = 0;
+
+            for (int j = 0; j < n; j++) {
+                if (((i / (int) Math.pow(2, j)) % 2) == 1) {
+                    pesoTotal += itens[j][0];
+                    valorTotal += itens[j][1];
+                }
+            }
+
+            if (pesoTotal <= capacidade && valorTotal > melhorValor) {
+                melhorValor = valorTotal;
+            }
+        }
+
+        return melhorValor;
+    }
     public static int backPackPd(int n, int c, int[][] itens){
         final int N = n;
         instru++;
